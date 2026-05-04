@@ -1,0 +1,133 @@
+USUARIOS
+--------
+id
+email
+senha_hash
+data_criacao
+
+
+MARCAS
+--------
+id
+nome
+pais
+slug
+
+
+CARROS
+--------
+id
+marca_id
+modelo
+geracao
+ano_inicio
+ano_fim
+slug
+
+
+BODYKITS
+--------
+id
+nome
+marca
+slug
+site_oficial
+
+
+POSTS (BUILDS)
+--------
+id
+usuario_id
+carro_id
+ano
+bodykit_id
+titulo
+descricao
+slug
+data_postagem
+views
+
+
+IMAGENS
+--------
+id
+post_id
+url_imagem
+principal
+ordem
+
+
+LIKES
+--------
+id
+post_id
+usuario_id
+data
+
+
+COMENTARIOS
+--------
+id
+post_id
+usuario_id
+texto
+data_criacao
+
+RELACIONAMENTOS
+Marca → Carro
+Marca
+   |
+   | 1:N
+   |
+Carros
+
+Exemplo:
+
+Mazda
+   ├── RX7
+   ├── RX8
+   └── MX5
+Carro → Builds
+Carro
+   |
+   | 1:N
+   |
+Builds
+
+Exemplo:
+
+RX7
+   ├── Build 1
+   ├── Build 2
+   └── Build 3
+Build → Imagens
+Build
+   |
+   | 1:N
+   |
+Imagens
+
+Exemplo:
+
+Build RX7 Rocket Bunny
+   ├── foto1
+   ├── foto2
+   └── foto3
+Build → Likes
+Build
+   |
+   | 1:N
+   |
+Likes
+Build → Comentários
+Build
+   |
+   | 1:N
+   |
+Comentários
+Usuário → Builds
+Usuário
+   |
+   | 1:N
+   |
+Builds

@@ -1,0 +1,156 @@
+PASSO 1 — Criar projeto FastAPI
+
+Estrutura inicial:
+
+backend/
+
+app/
+    main.py
+
+Rodar servidor:
+
+uvicorn main:app --reload
+PASSO 2 — Configurar PostgreSQL
+
+Criar banco:
+
+carbuilds_db
+
+Criar arquivo:
+
+database.py
+
+Conectar SQLAlchemy ao banco.
+
+PASSO 3 — Criar MODELS
+
+Criar pasta:
+
+models/
+
+Criar modelos:
+
+usuario.py
+marca.py
+carro.py
+bodykit.py
+post.py
+imagem.py
+like.py
+comentario.py
+
+Aqui você define todas as tabelas do banco.
+
+PASSO 4 — Criar SCHEMAS
+
+Pasta:
+
+schemas/
+
+Schemas definem entrada e saída da API.
+
+Exemplo:
+
+PostCreate
+PostResponse
+UsuarioCreate
+ComentarioCreate
+PASSO 5 — Sistema de LOGIN
+
+Criar:
+
+auth_routes.py
+
+Implementar:
+
+POST /register
+POST /login
+
+Com:
+
+JWT
+bcrypt
+PASSO 6 — CRUD de MARCAS
+
+Criar:
+
+marca_routes.py
+
+Rotas:
+
+GET /marcas
+POST /marcas
+PASSO 7 — CRUD de CARROS
+
+Criar:
+
+carro_routes.py
+
+Rotas:
+
+GET /carros
+GET /carros/{slug}
+PASSO 8 — CRUD de BODYKITS
+
+Criar:
+
+bodykit_routes.py
+
+Rotas:
+
+GET /bodykits
+GET /bodykits/{slug}
+PASSO 9 — SISTEMA DE BUILDS
+
+Criar:
+
+post_routes.py
+
+Rotas:
+
+POST /posts
+GET /builds/{slug}
+GET /carros/{slug}/posts
+PASSO 10 — UPLOAD DE IMAGENS
+
+Criar:
+
+upload_routes.py
+
+Implementar:
+
+POST /posts/{id}/imagens
+
+Enviar para:
+
+Cloudflare R2
+PASSO 11 — LIKES
+
+Criar:
+
+like_routes.py
+
+Rotas:
+
+POST /posts/{id}/like
+DELETE /posts/{id}/like
+PASSO 12 — COMENTÁRIOS
+
+Criar:
+
+comentario_routes.py
+
+Rotas:
+
+POST /posts/{id}/comentarios
+GET /posts/{id}/comentarios
+PASSO 13 — FILTROS
+
+Implementar:
+
+GET /carros/{slug}/posts?bodykit=rocket-bunny
+PASSO 14 — PAGINAÇÃO
+
+Exemplo:
+
+?page=1&limit=20
