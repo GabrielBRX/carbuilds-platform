@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual env
+venv/
+.env/
+
+# VSCode
+.vscode/
+
+# Uploads
+uploads/
+
+# Local files
+Diagrama
+Esqueleto programa
+repo-local/
+
+# OS
+.DS_Store
+Thumbs.db
