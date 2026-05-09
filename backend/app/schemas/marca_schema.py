@@ -10,3 +10,9 @@ class MarcaResponse(BaseModel):
     id: int
     nome: str
     pais: str
+
+class MarcaSimple(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    nome: str

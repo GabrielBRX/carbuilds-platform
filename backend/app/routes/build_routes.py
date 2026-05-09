@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
 
 from app.database.database import get_db
 
@@ -9,7 +10,8 @@ from app.models.carro import Carro
 
 from app.schemas.build_schema import (
     BuildCreate,
-    BuildResponse
+    BuildResponse,
+    BuildResponseComplete
 )
 
 from app.core.deps import get_current_user
@@ -69,12 +71,18 @@ def create_build(
     return build
 
 
-@router.get("/{slug}", response_model=BuildResponse)
+@router.get("/{slug}", response_model=BuildResponseComplete)
 def get_build(slug: str, db: Session = Depends(get_db)):
 
-    build = db.query(Build).filter(
-        Build.slug == slug
-    ).first()
+    build = (
+        db.query(Build)
+        .options(
+            joinedload(Build.carro).joinedload(Carro.marca),
+            joinedload(Build.imagens)
+        )
+        .filter(Build.slug == slug)
+        .first()
+    )
 
     if not build:
         raise HTTPException(

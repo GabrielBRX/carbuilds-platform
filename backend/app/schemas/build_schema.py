@@ -3,6 +3,10 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.carro_schema import CarroResponseComplete
+from app.schemas.imagem_schema import ImagemResponse
+
+
 
 class BuildCreate(BaseModel):
     slug: str
@@ -21,3 +25,14 @@ class BuildResponse(BaseModel):
     usuario_id: int
     carro_id: int
     data_criacao: datetime
+
+class BuildResponseComplete(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    slug: str
+    titulo: str
+    descricao: str | None
+    data_criacao: datetime
+    carro: CarroResponseComplete
+    imagens: list[ImagemResponse]
