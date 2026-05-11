@@ -19,7 +19,7 @@ class CarroResponse(BaseModel):
     ano_inicio: int
     ano_fim: int
 
-class CarroDetailResponseComplete(BaseModel):
+class CarroResponseComplete(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -29,4 +29,3 @@ class CarroDetailResponseComplete(BaseModel):
     ano_fim: int
 
     marca: MarcaSimple
-    

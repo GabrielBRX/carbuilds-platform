@@ -1,11 +1,5 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    ForeignKey,
-    DateTime,
-    Text
-)
+from sqlalchemy import Column,Integer,String,ForeignKey,DateTime,Text
+
 
 from sqlalchemy.orm import relationship
 
@@ -52,7 +46,7 @@ class Build(Base):
     carro = relationship("Carro")
 
     imagens = relationship(
-        "Imagem",
-        back_populates="build",
-        cascade="all, delete"
-    )
+    "Imagem",
+    back_populates="build",
+    cascade="all, delete"
+)

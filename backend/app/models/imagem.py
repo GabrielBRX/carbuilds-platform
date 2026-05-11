@@ -1,11 +1,4 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Boolean,
-    ForeignKey
-)
-
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.database.database import Base
@@ -18,9 +11,9 @@ class Imagem(Base):
 
     url = Column(String, nullable=False)
 
-    ordem = Column(Integer, default=0)
-
     principal = Column(Boolean, default=False)
+
+    ordem = Column(Integer, default=0)
 
     build_id = Column(
         Integer,

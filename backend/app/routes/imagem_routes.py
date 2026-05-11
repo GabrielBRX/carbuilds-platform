@@ -19,6 +19,7 @@ from app.database.database import get_db
 from app.models.imagem import Imagem
 from app.models.build import Build
 
+from app.schemas.imagem_schema import ImagemResponde
 
 router = APIRouter(
     prefix="/imagens",
@@ -42,7 +43,11 @@ ALLOWED_EXTENSIONS = {
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 
-@router.post("/{build_id}")
+@router.post(
+    "/{build_id}",
+    response_model=ImagemResponse,
+    status_code=status.HTTP_201_CREATED
+)
 def upload_imagem(
     build_id: int,
     arquivo: UploadFile = File(...),
@@ -109,7 +114,4 @@ def upload_imagem(
     db.commit()
     db.refresh(imagem)
 
-    return {
-        "message": "Imagem enviada com sucesso.",
-        "url": imagem.url
-    }
+    return imagem
