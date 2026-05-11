@@ -19,7 +19,7 @@ from app.database.database import get_db
 from app.models.imagem import Imagem
 from app.models.build import Build
 
-from app.schemas.imagem_schema import ImagemResponde
+from app.schemas.imagem_schema import ImagemResponse
 
 router = APIRouter(
     prefix="/imagens",
