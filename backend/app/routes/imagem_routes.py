@@ -167,7 +167,7 @@ def definir_imagem_principal(
 
     if not imagem:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Imagem não encotrada."
         )
     
