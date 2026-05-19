@@ -1,6 +1,8 @@
 import os
 import shutil
 
+
+from pathlib import Path
 from uuid import uuid4
 
 from fastapi import (
@@ -112,6 +114,73 @@ def upload_imagem(
 
     db.add(imagem)
     db.commit()
+    db.refresh(imagem)
+
+    return imagem
+
+@router.delete(
+    "/{imagem_id}",
+    status_code=status.HTTP_200_OK
+)
+def deletar_imagem(
+    imagem_id: int,
+    db: Session  = Depends(get_db)
+):
+    
+    imagem = db.query(Imagem).filter(
+        Imagem.id == imagem_id
+    ).firts()
+
+    if not imagem:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Imagem não encontrada."
+        )
+    
+    caminho_arquivo = imagem.url.replace("/uploads/", "uploads/")
+
+    arquivo = Path(caminho_arquivo)
+
+    if arquivo.exists():
+        arquivo.unlink()
+
+    db.delete(imagem)
+
+    db.commit()
+
+    return {
+        "message": "Imagem deletada com sucesso"
+    }
+
+@router.patch(
+    "/{imagem_id}/principal",
+    status_code=status.HTTP_200_OK
+)
+def definir_imagem_principal(
+    imagem_id: int,
+    db: Session = Depends(get_db)
+):
+    
+    imagem = db.query(Imagem).filter(
+        Imagem.id == imagem_id
+    ).first()
+
+    if not imagem:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND
+            detail="Imagem não encotrada."
+        )
+    
+    db.query(Imagem).filter(
+        imagem.build_id == imagem.build_id
+    ).update({
+        imagem.principal: False
+    })
+
+    imagem.princxipal = True
+
+    db.commit()
+
     db.refresh(imagem)
 
     return imagem
