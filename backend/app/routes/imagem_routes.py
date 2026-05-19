@@ -129,7 +129,7 @@ def deletar_imagem(
     
     imagem = db.query(Imagem).filter(
         Imagem.id == imagem_id
-    ).firts()
+    ).first()
 
     if not imagem:
         raise HTTPException(
@@ -172,12 +172,12 @@ def definir_imagem_principal(
         )
     
     db.query(Imagem).filter(
-        imagem.build_id == imagem.build_id
+        Imagem.build_id == imagem.build_id
     ).update({
-        imagem.principal: False
+        Imagem.principal: False
     })
 
-    imagem.princxipal = True
+    imagem.principal = True
 
     db.commit()
 
