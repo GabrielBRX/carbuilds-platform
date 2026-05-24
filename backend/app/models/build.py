@@ -48,5 +48,6 @@ class Build(Base):
     imagens = relationship(
     "Imagem",
     back_populates="build",
-    cascade="all, delete"
+    cascade="all, delete",
+    order_by="Imagem.ordem"
 )

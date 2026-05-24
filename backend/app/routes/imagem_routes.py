@@ -21,7 +21,10 @@ from app.database.database import get_db
 from app.models.imagem import Imagem
 from app.models.build import Build
 
-from app.schemas.imagem_schema import ImagemResponse
+from app.schemas.imagem_schema import ( 
+    ImagemResponse,
+    ImagemOrdemUpdate
+)
 
 router = APIRouter(
     prefix="/imagens",
@@ -38,7 +41,9 @@ ALLOWED_EXTENSIONS = {
     "jpg",
     "jpeg",
     "png",
-    "webp"
+    "webp",
+    "gif",
+    "jfif"
 }
 
 
@@ -109,7 +114,8 @@ def upload_imagem(
 
     imagem = Imagem(
         url=f"/uploads/{nome_arquivo}",
-        build_id=build.id
+        build_id=build.id,
+        ordem=total_imagens + 1
     )
 
     db.add(imagem)
@@ -184,3 +190,27 @@ def definir_imagem_principal(
     db.refresh(imagem)
 
     return imagem
+
+@router.patch(
+    "/reordenar",
+    status_code=status.HTTP_200_OK
+
+)
+def reordenar_imagens(
+    imagens: list[ImagemOrdemUpdate],
+    db: Session = Depends(get_db)
+):
+    
+    for item in imagens:
+        imagem = db.query(Imagem).filter(
+            Imagem.id == item.id
+        ).first()
+
+    if imagem:
+        imagem.ordem = item.ordem
+    
+    db.commit()
+
+    return {
+        "message": "Imagens reordenadas com sucesso."
+    }

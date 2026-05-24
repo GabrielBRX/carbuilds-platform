@@ -8,3 +8,7 @@ class ImagemResponse(BaseModel):
     url: str
     principal: bool
     ordem: int
+
+class ImagemOrdemUpdate(BaseModel):
+    id: int
+    ordem: int

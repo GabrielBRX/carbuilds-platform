@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from fastapi.security import OAuth2PasswordRequestForm
 
 from app.database.database import get_db
 from app.models.usuario import Usuario
@@ -35,15 +36,30 @@ def register(usuario: UsuarioCreate, db: Session = Depends(get_db)):
     return novo_usuario
 
 @router.post("/login")
-def login(dados: UsuarioLogin, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.email == dados.email).first()
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+
+    usuario = db.query(Usuario).filter(
+        Usuario.email == form_data.username
+    ).first()
 
     if not usuario:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuário não encontrado"
+        )
 
-    if not verificar_senha(dados.senha, usuario.senha_hash):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Senha inválida")
-    
+    if not verificar_senha(
+        form_data.password,
+        usuario.senha_hash
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Senha inválida"
+        )
+
     token = criar_token({"sub": usuario.email})
 
     return {

@@ -13,6 +13,25 @@ def criar_carro(payload: CarroCreate, db: Session = Depends(get_db)):
     marca = db.query(Marca).filter(Marca.id == payload.marca_id).first()
     if not marca:
         raise HTTPException(status_code=404, detail="Marca não encontrada")
+    
+    existing_carro = db.query(Carro).filter(
+        Carro.modelo == payload.modelo,
+        Carro.geracao == payload.geracao,
+        Carro.ano_inicio == payload.ano_inincio,
+        Carro.ano_fim == payload.ano_fim,
+        Carro.marca_id == payload.marca_id
+    ).first()
+
+    if existing_carro:
+        raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Carro com as mesmas características já existe."
+        )
+
+
+
+
+
 
     carro = Carro(
         marca_id=payload.marca_id,
