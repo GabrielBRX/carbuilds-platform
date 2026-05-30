@@ -20,9 +20,23 @@ from app.core.deps import get_current_user
 router = APIRouter(prefix="/builds", tags=["builds"])
 
 
-@router.get("/", response_model=list[BuildResponse])
-def list_builds(db: Session = Depends(get_db)):
-    return db.query(Build).order_by(Build.id.desc()).all()
+@router.get("/", response_model=list[BuildResponseComplete])
+def list_builds(
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db)
+):
+    return (
+        db.query(Build)
+        .options(
+            joinedload(Build.carro).joinedload(Carro.marca),
+            joinedload(Build.imagens)
+        )
+        .order_by(Build.id.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 
 @router.post(

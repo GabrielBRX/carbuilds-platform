@@ -49,6 +49,50 @@ ALLOWED_EXTENSIONS = {
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
+def reordenar_imagens(
+    imagens: list[ImagemOrdemUpdate],
+    db: Session = Depends(get_db)
+):
+
+    for item in imagens:
+        imagem = db.query(Imagem).filter(
+            Imagem.id == item.id
+        ).first()
+
+        if imagem:
+            imagem.ordem = item.ordem
+
+    db.commit()
+
+    return {
+        "message": "Imagens reordenadas com sucesso."
+    }
+
+@router.patch(
+    "/reordenar",
+    status_code=status.HTTP_200_OK
+)
+
+
+def reordenar_imagens(
+    imagens: list[ImagemOrdemUpdate],
+    db: Session = Depends(get_db)
+):
+
+    for item in imagens:
+        imagem = db.query(Imagem).filter(
+            Imagem.id == item.id
+        ).first()
+
+        if imagem:
+            imagem.ordem = item.ordem
+
+    db.commit()
+
+    return {
+        "message": "Imagens reordenadas com sucesso."
+    }
+
 
 @router.post(
     "/{build_id}",
@@ -191,26 +235,3 @@ def definir_imagem_principal(
 
     return imagem
 
-@router.patch(
-    "/reordenar",
-    status_code=status.HTTP_200_OK
-
-)
-def reordenar_imagens(
-    imagens: list[ImagemOrdemUpdate],
-    db: Session = Depends(get_db)
-):
-    
-    for item in imagens:
-        imagem = db.query(Imagem).filter(
-            Imagem.id == item.id
-        ).first()
-
-    if imagem:
-        imagem.ordem = item.ordem
-    
-    db.commit()
-
-    return {
-        "message": "Imagens reordenadas com sucesso."
-    }
