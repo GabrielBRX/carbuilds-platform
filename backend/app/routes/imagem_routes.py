@@ -235,3 +235,20 @@ def definir_imagem_principal(
 
     return imagem
 
+@router.get(
+    "build/{build_id}",
+    response_model=list[ImagemResponse]
+)
+def listar_imagens_build(
+    build_id: int,
+    db: Session = Depends(get_db)
+):
+    
+    imagens = (
+        db.query(Imagem)
+        .filter(Imagem.build_id == build_id)
+        .order_by(Imagem.ordem)
+        .all()
+    )
+
+    return imagens
