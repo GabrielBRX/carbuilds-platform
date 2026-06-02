@@ -84,6 +84,30 @@ def create_build(
 
     return build
 
+@router.get(
+        "/marca/{marca_nome}",
+        response_model=list[BuildResponseComplete]
+)
+def get_builds_by_marca(
+    marca_nome: str,
+    db: Session = Depends(get_db)
+):
+    
+    builds = (
+        db.query(Build)
+        .join(Build.carro)
+        .join(Carro.marca)
+        .options(
+            joinedload(Build.carro).joinedload(Carro.marca),
+            joinedload(Build.imagens)
+        )
+        .filter(Carro.marca.has(nome=marca_nome.capitalize()))
+        .all()
+    )
+
+    return builds
+
+
 
 @router.get("/{slug}", response_model=BuildResponseComplete)
 def get_build(slug: str, db: Session = Depends(get_db)):
