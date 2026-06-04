@@ -8,7 +8,8 @@ from app.routes import (
     marca_routes,
     carro_routes,
     build_routes,
-    imagem_routes
+    imagem_routes,
+    usuario_routes
 )
 
 # cria tabelas
@@ -25,7 +26,7 @@ app.include_router(marca_routes.router)
 app.include_router(carro_routes.router)
 app.include_router(build_routes.router)
 app.include_router(imagem_routes.router)
-
+app.include_router(usuario_routes.router)
 # uploads
 app.mount(
     "/uploads",

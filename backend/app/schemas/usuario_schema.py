@@ -1,6 +1,7 @@
 from datetime import datetime
-
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
+
+from app.schemas.build_schema import BuildResponseComplete
 
 
 class UsuarioCreate(BaseModel):
@@ -19,3 +20,18 @@ class UsuarioResponse(BaseModel):
 class UsuarioLogin(BaseModel):
     email: EmailStr
     senha: str
+
+class UsuarioPublicResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    email: EmailStr
+    data_criacao: datetime
+
+class UsuarioProfileResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    email: str
+    data_criacao: datetime
+    builds: list[BuildResponseComplete]
