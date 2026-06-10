@@ -26,7 +26,8 @@ def list_builds(
     limit: int = 10,
     db: Session = Depends(get_db)
 ):
-    return (
+
+    builds = (
         db.query(Build)
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
@@ -38,6 +39,10 @@ def list_builds(
         .all()
     )
 
+    for build in builds:
+        build.likes_count = 0
+
+    return builds
 
 @router.post(
     "/",
@@ -127,5 +132,7 @@ def get_build(slug: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Build not found."
         )
+
+    build.likes_count = 0
 
     return build

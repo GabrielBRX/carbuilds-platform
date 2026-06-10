@@ -26,6 +26,8 @@ class BuildResponse(BaseModel):
     carro_id: int
     data_criacao: datetime
 
+    likes_count: int = 0
+
 class BuildResponseComplete(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -36,3 +38,6 @@ class BuildResponseComplete(BaseModel):
     data_criacao: datetime
     carro: CarroResponseComplete
     imagens: list[ImagemResponse]
+    
+    likes_count: int = 0
+    
