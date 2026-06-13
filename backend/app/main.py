@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.database.database import Base, engine
+from app.models.like import Like
 
 from app.routes import (
     auth_routes,
@@ -9,10 +10,11 @@ from app.routes import (
     carro_routes,
     build_routes,
     imagem_routes,
-    usuario_routes
+    usuario_routes,
+    like_routes
 )
 
-# cria tabelas
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -20,14 +22,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# rotas
+
 app.include_router(auth_routes.router)
 app.include_router(marca_routes.router)
 app.include_router(carro_routes.router)
 app.include_router(build_routes.router)
 app.include_router(imagem_routes.router)
 app.include_router(usuario_routes.router)
-# uploads
+app.include_router(like_routes.router)
+
 app.mount(
     "/uploads",
     StaticFiles(directory="uploads"),
