@@ -31,7 +31,8 @@ def list_builds(
         db.query(Build)
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
-            joinedload(Build.imagens)
+            joinedload(Build.imagens),
+            joinedload(Build.likes)
         )
         .order_by(Build.id.desc())
         .offset(skip)
@@ -40,9 +41,10 @@ def list_builds(
     )
 
     for build in builds:
-        build.likes_count = 0
+        build.likes_count = len(build.likes)
 
     return builds
+
 
 @router.post(
     "/",
@@ -87,31 +89,37 @@ def create_build(
     db.commit()
     db.refresh(build)
 
+    build.likes_count = 0
+
     return build
 
+
 @router.get(
-        "/marca/{marca_nome}",
-        response_model=list[BuildResponseComplete]
+    "/marca/{marca_nome}",
+    response_model=list[BuildResponseComplete]
 )
 def get_builds_by_marca(
     marca_nome: str,
     db: Session = Depends(get_db)
 ):
-    
+
     builds = (
         db.query(Build)
         .join(Build.carro)
         .join(Carro.marca)
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
-            joinedload(Build.imagens)
+            joinedload(Build.imagens),
+            joinedload(Build.likes)
         )
         .filter(Carro.marca.has(nome=marca_nome.capitalize()))
         .all()
     )
 
-    return builds
+    for build in builds:
+        build.likes_count = len(build.likes)
 
+    return builds
 
 
 @router.get("/{slug}", response_model=BuildResponseComplete)
@@ -121,7 +129,8 @@ def get_build(slug: str, db: Session = Depends(get_db)):
         db.query(Build)
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
-            joinedload(Build.imagens)
+            joinedload(Build.imagens),
+            joinedload(Build.likes)
         )
         .filter(Build.slug == slug)
         .first()
@@ -133,6 +142,6 @@ def get_build(slug: str, db: Session = Depends(get_db)):
             detail="Build not found."
         )
 
-    build.likes_count = 0
+    build.likes_count = len(build.likes)
 
     return build

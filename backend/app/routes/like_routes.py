@@ -61,3 +61,30 @@ def like_build(
         "message": "Build curtida com sucesso."
     }
     
+@router.delete(
+    "/{build_id}",
+    status_code=status.HTTP_200_OK
+)
+def unlike_build(
+    build_id: int,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user)
+):
+
+    like = db.query(Like).filter(
+        Like.usuario_id == usuario.id,
+        Like.build_id == build_id
+    ).first()
+
+    if not like:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Curtida não encontrada."
+        )
+
+    db.delete(like)
+    db.commit()
+
+    return {
+        "message": "Curtida removida com sucesso."
+    }
