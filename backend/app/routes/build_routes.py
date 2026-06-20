@@ -31,7 +31,8 @@ def list_builds(
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
             joinedload(Build.imagens),
-            joinedload(Build.likes)
+            joinedload(Build.likes),
+            joinedload(Build.comentarios)
         )
         .order_by(Build.id.desc())
         .offset(skip)
@@ -41,7 +42,7 @@ def list_builds(
 
     for build in builds:
         build.likes_count = len(build.likes)
-        build.comentarios_count = 0
+        build.comentarios_count = len(build.comentarios)
 
     return builds
 
@@ -111,7 +112,8 @@ def get_builds_by_marca(
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
             joinedload(Build.imagens),
-            joinedload(Build.likes)
+            joinedload(Build.likes),
+            joinedload(Build.comentarios)
         )
         .filter(Carro.marca.has(nome=marca_nome.capitalize()))
         .all()
@@ -119,7 +121,7 @@ def get_builds_by_marca(
 
     for build in builds:
         build.likes_count = len(build.likes)
-        build.comentarios_count = 0
+        build.comentarios_count = len(build.comentarios)
 
     return builds
 
@@ -132,7 +134,8 @@ def get_build(slug: str, db: Session = Depends(get_db)):
         .options(
             joinedload(Build.carro).joinedload(Carro.marca),
             joinedload(Build.imagens),
-            joinedload(Build.likes)
+            joinedload(Build.likes),
+            joinedload(Build.comentarios)
         )
         .filter(Build.slug == slug)
         .first()
@@ -145,6 +148,6 @@ def get_build(slug: str, db: Session = Depends(get_db)):
         )
 
     build.likes_count = len(build.likes)
-    build.comentarios_count = 0
+    build.comentarios_count = len(build.comentarios)
 
     return build

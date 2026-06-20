@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.database.database import Base, engine
 from app.models.like import Like
+from app.models.comentario import Comentario
 
 from app.routes import (
     auth_routes,
@@ -11,7 +12,8 @@ from app.routes import (
     build_routes,
     imagem_routes,
     usuario_routes,
-    like_routes
+    like_routes,
+    comentario_routes
 )
 
 
@@ -30,6 +32,7 @@ app.include_router(build_routes.router)
 app.include_router(imagem_routes.router)
 app.include_router(usuario_routes.router)
 app.include_router(like_routes.router)
+app.include_router(comentario_routes.router)
 
 app.mount(
     "/uploads",

@@ -1,7 +1,7 @@
-from sqlalchemy import Column,Integer,String,ForeignKey,DateTime,Text
-
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
+
 from app.database.database import Base
 
 
@@ -51,6 +51,12 @@ class Build(Base):
 
     likes = relationship(
         "Like",
+        back_populates="build",
+        cascade="all, delete"
+    )
+
+    comentarios = relationship(
+        "Comentario",
         back_populates="build",
         cascade="all, delete"
     )
