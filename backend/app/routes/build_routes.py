@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import Session, joinedload
 
 from app.database.database import get_db
 
@@ -42,6 +41,7 @@ def list_builds(
 
     for build in builds:
         build.likes_count = len(build.likes)
+        build.comentarios_count = 0
 
     return builds
 
@@ -90,6 +90,7 @@ def create_build(
     db.refresh(build)
 
     build.likes_count = 0
+    build.comentarios_count = 0
 
     return build
 
@@ -118,6 +119,7 @@ def get_builds_by_marca(
 
     for build in builds:
         build.likes_count = len(build.likes)
+        build.comentarios_count = 0
 
     return builds
 
@@ -143,5 +145,6 @@ def get_build(slug: str, db: Session = Depends(get_db)):
         )
 
     build.likes_count = len(build.likes)
+    build.comentarios_count = 0
 
     return build

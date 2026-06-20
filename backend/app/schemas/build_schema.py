@@ -7,7 +7,6 @@ from app.schemas.carro_schema import CarroResponseComplete
 from app.schemas.imagem_schema import ImagemResponse
 
 
-
 class BuildCreate(BaseModel):
     slug: str
     titulo: str
@@ -27,6 +26,8 @@ class BuildResponse(BaseModel):
     data_criacao: datetime
 
     likes_count: int = 0
+    comentarios_count: int = 0
+
 
 class BuildResponseComplete(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -36,8 +37,9 @@ class BuildResponseComplete(BaseModel):
     titulo: str
     descricao: str | None
     data_criacao: datetime
+
     carro: CarroResponseComplete
     imagens: list[ImagemResponse]
-    
+
     likes_count: int = 0
-    
+    comentarios_count: int = 0
