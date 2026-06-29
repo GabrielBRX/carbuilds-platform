@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from app.database.database import Base, engine
 from app.models.like import Like
 from app.models.comentario import Comentario
+from app.models.favorito import Favorito
 
 from app.routes import (
     auth_routes,
@@ -13,9 +14,9 @@ from app.routes import (
     imagem_routes,
     usuario_routes,
     like_routes,
-    comentario_routes
+    comentario_routes,
+    favorito_routes
 )
-
 
 Base.metadata.create_all(bind=engine)
 
@@ -33,7 +34,7 @@ app.include_router(imagem_routes.router)
 app.include_router(usuario_routes.router)
 app.include_router(like_routes.router)
 app.include_router(comentario_routes.router)
-
+app.include_router(favorito_routes.router)
 app.mount(
     "/uploads",
     StaticFiles(directory="uploads"),

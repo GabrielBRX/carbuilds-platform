@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.usuario_schema import UsuarioResponse
+
 
 class ComentarioCreate(BaseModel):
     conteudo: str
@@ -12,6 +14,6 @@ class ComentarioResponse(BaseModel):
 
     id: int
     conteudo: str
-    usuario_id: int
-    build_id: int
     data_criacao: datetime
+
+    usuario: UsuarioResponse

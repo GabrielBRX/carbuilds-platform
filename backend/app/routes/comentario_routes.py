@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.database.database import get_db
 
@@ -66,6 +66,9 @@ def listar_comentarios_build(
 
     comentarios = (
         db.query(Comentario)
+        .options(
+            joinedload(Comentario.usuario)
+        )
         .filter(Comentario.build_id == build_id)
         .order_by(Comentario.id.desc())
         .all()

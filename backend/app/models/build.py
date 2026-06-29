@@ -60,3 +60,9 @@ class Build(Base):
         back_populates="build",
         cascade="all, delete"
     )
+
+    favoritos = relationship(
+        "Favorito",
+        back_populates="build",
+        cascade="all, delete"
+)
