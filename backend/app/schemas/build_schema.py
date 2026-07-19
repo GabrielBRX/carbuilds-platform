@@ -27,6 +27,7 @@ class BuildResponse(BaseModel):
 
     likes_count: int = 0
     comentarios_count: int = 0
+    favoritos_count: int = 0
 
 
 class BuildResponseComplete(BaseModel):
@@ -43,3 +44,4 @@ class BuildResponseComplete(BaseModel):
 
     likes_count: int = 0
     comentarios_count: int = 0
+    favoritos_count: int = 0
