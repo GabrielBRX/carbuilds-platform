@@ -38,8 +38,10 @@ class Build(Base):
         default=datetime.utcnow
     )
 
-    usuario = relationship("Usuario")
-
+    usuario = relationship(
+    "Usuario",
+    back_populates="builds"
+)
     carro = relationship("Carro")
 
     imagens = relationship(
